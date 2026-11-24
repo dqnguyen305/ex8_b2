@@ -1,0 +1,19 @@
+services:
+  github-runner:
+    image: myoung34/github-runner:ubuntu-noble
+    container_name: quickbite-github-runner
+    restart: unless-stopped
+    environment:
+      RUNNER_SCOPE: repo
+      REPO_URL: ${GITHUB_REPOSITORY_URL:?Set GITHUB_REPOSITORY_URL in .env}
+      ACCESS_TOKEN: ${GITHUB_RUNNER_PAT:?Set GITHUB_RUNNER_PAT in .env}
+      RUNNER_NAME: quickbite-dood
+      RUNNER_WORKDIR: /_work
+      LABELS: linux,x64,docker
+      RUN_AS_ROOT: "true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - runner-work:/_work
+
+volumes:
+  runner-work:
